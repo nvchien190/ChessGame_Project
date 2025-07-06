@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="square_values">42dp</dimen>
     <dimen name="chess_piece_size">40dp</dimen>
+    <dimen name="textViewTurn">18sp</dimen>
+    <dimen name="margintopTurn">16dp</dimen>
 </resources>

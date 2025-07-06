@@ -1,4 +1,12 @@
-package vn.edu.fpt.chessgame.model;
+package vn.edu.fpt.chessgame.logic;
+
+import vn.edu.fpt.chessgame.model.Bishop;
+import vn.edu.fpt.chessgame.model.ChessPiece;
+import vn.edu.fpt.chessgame.model.King;
+import vn.edu.fpt.chessgame.model.Knight;
+import vn.edu.fpt.chessgame.model.Pawn;
+import vn.edu.fpt.chessgame.model.Queen;
+import vn.edu.fpt.chessgame.model.Rook;
 
 public class setupBoard {
     private ChessPiece[][] board;
