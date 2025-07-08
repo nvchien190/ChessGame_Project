@@ -48,12 +48,12 @@ public class setupBoard {
 //        board[1][1] = new Pawn(ChessPiece.Color.WHITE);
 //  board[6][1] = new Pawn(ChessPiece.Color.BLACK);
 
-        board[1][6] = new Queen(ChessPiece.Color.WHITE);
-        board[1][7] = new Queen(ChessPiece.Color.WHITE);
+//        board[1][6] = new Queen(ChessPiece.Color.WHITE);
+//        board[1][7] = new Queen(ChessPiece.Color.WHITE);
         board[0][0] = new King(ChessPiece.Color.BLACK);
 
-//        board[6][1] = new Queen(ChessPiece.Color.BLACK);
-//        board[6][2] = new Queen(ChessPiece.Color.BLACK);
+        board[6][1] = new Queen(ChessPiece.Color.BLACK);
+        board[6][2] = new Queen(ChessPiece.Color.BLACK);
         board[7][7] = new King(ChessPiece.Color.WHITE);
 
 

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margintopTurn"
-        android:text="@string/textTurn"
+        android:text="@string/textTurnWhite"
         android:textSize="@dimen/textViewTurn"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -411,4 +411,33 @@
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
     </GridLayout>
+    <LinearLayout
+        android:id="@+id/endGameOverlay"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#AAFF0000"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/endGameText"
+            android:text="@string/white_win"
+            android:textSize="@dimen/textEndGame"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/marginBTextEndGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/restartButton"
+            android:text="@string/textPlayAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

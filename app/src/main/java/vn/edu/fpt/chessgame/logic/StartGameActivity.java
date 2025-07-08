@@ -1,12 +1,16 @@
 package vn.edu.fpt.chessgame.logic;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +54,7 @@ public class StartGameActivity extends AppCompatActivity {
 
         //
         turnTextView = findViewById(R.id.turnTextView);
-        turnTextView.setText(getString(R.string.textTurn));
+        turnTextView.setText(getString(R.string.textTurnWhite));
 
     }
 
@@ -83,7 +87,7 @@ public class StartGameActivity extends AppCompatActivity {
             for (int col = 0; col < 8; col++) {
                 String id = "R" + row + col;
                 int resId = getResources().getIdentifier(id, "id", getPackageName());
-                ImageView cell = findViewById(resId); // Sửa từ TextView → ImageView
+                ImageView cell = findViewById(resId);
                 if (cell == null) continue;
 
                 // Gán tọa độ vào tag để dễ xử lý
@@ -96,10 +100,11 @@ public class StartGameActivity extends AppCompatActivity {
             }
         }
     }
+    /*Xử lí lượt chọn*/
     private void handlePieceSelection(int row, int col, ChessPiece piece) {
         if ((isWhiteTurn && piece.getColor() != ChessPiece.Color.WHITE) ||
                 (!isWhiteTurn && piece.getColor() != ChessPiece.Color.BLACK)) {
-            Toast.makeText(this, "🚫 Không phải lượt của bạn", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.notYetMove), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -129,7 +134,7 @@ public class StartGameActivity extends AppCompatActivity {
             if (selectedPiece != null && selectedPiece.isValidMove(selectedRow, selectedCol, row, col, board)) {
                 handleMove(row, col);
             } else {
-                Toast.makeText(this, "❌ Nước đi không hợp lệ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.invalidMove), Toast.LENGTH_SHORT).show();
             }
 
             selectedRow = -1;
@@ -148,20 +153,48 @@ public class StartGameActivity extends AppCompatActivity {
                 ChessPiece.Color winnerColor = justMovedColor == ChessPiece.Color.WHITE
                         ? ChessPiece.Color.BLACK
                         : ChessPiece.Color.WHITE;
+                Toast.makeText(this, getResources().getString(R.string.checkmateEnd) + (winnerColor == ChessPiece.Color.WHITE ? getResources().getString( R.string.white_win) : getResources().getString(R.string.black_win)) , Toast.LENGTH_LONG).show();
 
-                Toast.makeText(this, "♛ Chiếu hết! " + (winnerColor == ChessPiece.Color.WHITE ? "Trắng" : "Đen") + " thắng!", Toast.LENGTH_LONG).show();
-                // TODO: Khóa bàn cờ hoặc reset game
+                // Hiển thị overlay
+                LinearLayout overlay = findViewById(R.id.endGameOverlay);
+                TextView endText = findViewById(R.id.endGameText);
+                Button restartButton = findViewById(R.id.restartButton);
+
+                String winnerText = (winnerColor == ChessPiece.Color.WHITE ? getResources().getString( R.string.white_win ):getResources().getString( R.string.black_win));
+                endText.setText(winnerText);
+                overlay.setAlpha(0f);
+                overlay.setVisibility(View.VISIBLE);
+                overlay.animate().alpha(1f).setDuration(500).start();
+
+
+                restartButton.setOnClickListener(v -> resetGame());
+                  // TODO: Khóa bàn cờ hoặc reset game
             } else {
-                Toast.makeText(this, "⚠️ Chiếu!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.checkmate), Toast.LENGTH_SHORT).show();
             }
         }
     }
+    private void resetGame() {
+        setupBoard setup = new setupBoard();
+        board = setup.getBoard();
+        renderPiecesToBoard();
+        isWhiteTurn = true;
+        turnTextView.setText(R.string.textTurnWhite);
+        selectedRow = -1;
+        selectedCol = -1;
+        clearHighlights();
+
+        // Ẩn overlay
+        findViewById(R.id.endGameOverlay).setVisibility(View.GONE);
+    }
+
+    /*Ktra nước đi hợp lệ khi bị chiếu*/
     private void handleMove(int row, int col) {
         ChessPiece selectedPiece = board[selectedRow][selectedCol];
         ChessPiece target = board[row][col];
 
         if (target != null && target.getColor() == selectedPiece.getColor()) {
-            Toast.makeText(this, "🚫 Không thể ăn quân cùng màu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.notAllowKill), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -170,7 +203,7 @@ public class StartGameActivity extends AppCompatActivity {
         tempBoard[selectedRow][selectedCol] = null;
 
         if (isKingInCheckAfterMove(tempBoard, selectedPiece.getColor())) {
-            Toast.makeText(this, "🚫 Không thể đi vì vẫn bị chiếu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.handleMoveCheckMate), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -183,12 +216,12 @@ public class StartGameActivity extends AppCompatActivity {
         }
 
         isWhiteTurn = !isWhiteTurn;
-        turnTextView.setText(isWhiteTurn ? "Lượt: Trắng" : "Lượt: Đen");
+        turnTextView.setText(isWhiteTurn ? R.string.textTurnWhite : R.string.textTurnBlack);
 
         checkForCheckOrCheckmate();
     }
 
-
+   /*Tô nước đi hợp lệ*/
     private void highlightValidMoves(int row, int col) {
         ChessPiece piece = board[row][col];
         if (piece == null) return;
@@ -241,6 +274,7 @@ public class StartGameActivity extends AppCompatActivity {
         highlightedCells.clear();
     }
 
+    /*Chọn cờ phong*/
     private void showPromotionDialog(int row, int col, ChessPiece.Color color) {
         String[] options = {"Hậu", "Xe", "Tượng", "Mã"};
         int[] imageResIds = {
@@ -253,7 +287,7 @@ public class StartGameActivity extends AppCompatActivity {
         PromotionAdapter adapter = new PromotionAdapter(this, options, imageResIds, color);
 
         new AlertDialog.Builder(this)
-                .setTitle("Chọn quân để phong")
+                .setTitle(R.string.selectPieceToPromotion)
                 .setAdapter(adapter, (dialog, which) -> {
                     ChessPiece newPiece = null;
                     switch (which) {
@@ -267,11 +301,13 @@ public class StartGameActivity extends AppCompatActivity {
                     renderPiecesToBoard();
 
                     isWhiteTurn = !isWhiteTurn;
-                    turnTextView.setText(isWhiteTurn ? "Lượt: Trắng" : "Lượt: Đen");
+                    turnTextView.setText(isWhiteTurn ? R.string.textTurnWhite : R.string.textTurnBlack);
                 })
                 .setCancelable(false)
                 .show();
     }
+
+    /*Tìm vua*/
     private int[] findKingPosition(ChessPiece.Color color) {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
@@ -283,10 +319,12 @@ public class StartGameActivity extends AppCompatActivity {
         }
         return null; // Vua không còn trên bàn
     }
+
+    /*Ktra vua bị chiếu*/
     private boolean isKingInCheck(ChessPiece.Color kingColor) {
         int[] kingPos = findKingPosition(kingColor);
         if (kingPos == null) {
-            Log.d("Checkmate", "Không tìm thấy vua " + kingColor);
+            Log.d("Checkmate", getResources().getString(R.string.kingNotFound) + kingColor);
             return false;
         }
 
@@ -307,6 +345,7 @@ public class StartGameActivity extends AppCompatActivity {
         return false;
     }
 
+    /*Clone bàn cờ tạo nước đi thử nghiệm*/
     private ChessPiece[][] cloneBoard(ChessPiece[][] original) {
         ChessPiece[][] copy = new ChessPiece[8][8];
         for (int r = 0; r < 8; r++) {
@@ -318,6 +357,7 @@ public class StartGameActivity extends AppCompatActivity {
         }
         return copy;
     }
+    /*Ktra nước đi hợp lệ sau khi bị chiếu*/
     private boolean isKingInCheckAfterMove(ChessPiece[][] tempBoard, ChessPiece.Color color) {
         ChessPiece[][] original = board;
         board = tempBoard;
@@ -325,11 +365,13 @@ public class StartGameActivity extends AppCompatActivity {
         board = original;
         return result;
     }
+
+    /*Ktra chiếu và chiếu hết*/
     private boolean isCheckmate(ChessPiece.Color color) {
-        Log.d("Checkmate", "Đang kiểm tra chiếu hết cho: " + color);
+//        Log.d("Checkmate", "Đang kiểm tra chiếu hết cho: " + color);
 
         if (!isKingInCheck(color)) return false;
-        Log.d("Checkmate", "Đang kiểm tra chiếu hết cho: " + color);
+//        Log.d("Checkmate", "Đang kiểm tra chiếu hết cho: " + color);
 
         for (int sr = 0; sr < 8; sr++) {
             for (int sc = 0; sc < 8; sc++) {
@@ -341,7 +383,7 @@ public class StartGameActivity extends AppCompatActivity {
                                 ChessPiece[][] tempBoard = cloneBoard(board);
                                 tempBoard[er][ec] = tempBoard[sr][sc];
                                 tempBoard[sr][sc] = null;
-                                Log.d("Checkmate", "Thử nước: " + sr + "," + sc + " → " + er + "," + ec);
+//                                Log.d("Checkmate", "Thử nước: " + sr + "," + sc + " → " + er + "," + ec);
 
                                 if (!isKingInCheckAfterMove(tempBoard, color)) {
                                     return false; // Có ít nhất 1 nước thoát

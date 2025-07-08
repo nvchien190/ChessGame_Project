@@ -1,7 +1,17 @@
 <resources>
     <string name="app_name">ChessGame</string>
-    <string name="textTurn">Lượt: Trắng</string>
-    <string name="white_win">♛ Trắng thắng ván cờ!</string>
+    <string name="textTurnWhite">Lượt: Trắng</string>
+    <string name="textTurnBlack">Lượt: Đen</string>
+    <string name="white_win">♛ Trắng thắng! Kết thúc ván cờ!</string>
+    <string name="black_win">♛ Đen thắng! Kết thúc ván cờ!</string>
+    <string name="notYetMove">🚫 Không phải lượt của bạn</string>
+    <string name="checkmateEnd">"♛ Chiếu hết!</string>
+    <string name="checkmate">"♛ Chiếu tướng!</string>
     <string name="textPlayAgain">Chơi lại</string>
+    <string name="notAllowKill">🚫 Không thể ăn quân cùng màu</string>
     <string name="textExitButton">Thoát</string>
+    <string name="invalidMove">❌ Nước đi không hợp lệ</string>
+    <string name="selectPieceToPromotion">Chọn quân để phong</string>
+    <string name="kingNotFound">Không tìm thấy vua</string>
+    <string name="handleMoveCheckMate">🚫 Không thể đi vì vẫn bị chiếu</string>
 </resources>
