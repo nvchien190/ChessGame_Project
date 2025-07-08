@@ -9,6 +9,7 @@
     <color name="colorKingInDanger">#8dff0004</color>
     <color name="colorChoosePieces">#F90CD905</color>
     <color name="colorSelectedPiece">#8833B5E5</color>
+    <color name="colorTextEndGame">#ffffff</color>
 
 
 </resources>

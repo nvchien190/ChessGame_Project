@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ChessGame</string>
     <string name="textTurn">Lượt: Trắng</string>
+    <string name="white_win">♛ Trắng thắng ván cờ!</string>
+    <string name="textPlayAgain">Chơi lại</string>
+    <string name="textExitButton">Thoát</string>
 </resources>

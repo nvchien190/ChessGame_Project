@@ -6,4 +6,7 @@
     <dimen name="chess_piece_size">40dp</dimen>
     <dimen name="textViewTurn">18sp</dimen>
     <dimen name="margintopTurn">16dp</dimen>
+    <dimen name="textEndGame">24sp</dimen>
+    <dimen name="marginBTextEndGame">32dp</dimen>
+    <dimen name="marginTExitButton">24dp</dimen>
 </resources>

@@ -13,7 +13,7 @@ public class setupBoard {
 
     public setupBoard() {
         board = new ChessPiece[8][8];
-        setupBoard(0);
+        setupBoard();
     }
 
     private void setupBoard() {
@@ -52,8 +52,8 @@ public class setupBoard {
         board[1][7] = new Queen(ChessPiece.Color.WHITE);
         board[0][0] = new King(ChessPiece.Color.BLACK);
 
-        board[6][1] = new Queen(ChessPiece.Color.BLACK);
-        board[6][2] = new Queen(ChessPiece.Color.BLACK);
+//        board[6][1] = new Queen(ChessPiece.Color.BLACK);
+//        board[6][2] = new Queen(ChessPiece.Color.BLACK);
         board[7][7] = new King(ChessPiece.Color.WHITE);
 
 
