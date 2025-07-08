@@ -18,4 +18,9 @@ public class Knight extends ChessPiece{
     public int getDrawableRes() {
         return (color == Color.WHITE) ? R.drawable.wknight : R.drawable.bknight;
     }
+    @Override
+    public ChessPiece clone() {
+        return new Knight(this.getColor());
+    }
+
 }

@@ -44,4 +44,9 @@ public class Queen extends ChessPiece{
     public int getDrawableRes() {
         return (color==Color.WHITE)? R.drawable.wqueen : R.drawable.bqueen;
     }
+    @Override
+    public ChessPiece clone() {
+        return new Queen(this.getColor());
+    }
+
 }

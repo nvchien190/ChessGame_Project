@@ -40,4 +40,9 @@ public class Rook extends ChessPiece{
     public int getDrawableRes() {
         return (color == Color.WHITE) ? R.drawable.wrook : R.drawable.brook;
     }
+    @Override
+    public ChessPiece clone() {
+        return new Rook(this.getColor());
+    }
+
 }

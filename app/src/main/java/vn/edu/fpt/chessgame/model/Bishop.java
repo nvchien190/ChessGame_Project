@@ -40,4 +40,9 @@ public class Bishop extends  ChessPiece{
     public int getDrawableRes() {
         return (color == Color.WHITE) ? R.drawable.wbishop : R.drawable.bbishop;
     }
+    @Override
+    public ChessPiece clone() {
+        return new Bishop(this.getColor());
+    }
+
 }
