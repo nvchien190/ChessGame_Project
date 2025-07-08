@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ChessGame"
         tools:targetApi="31">
 
-        <activity android:name=".NewGameActivity" />
+        <activity android:name=".logic.StartGameActivity" />
         <activity
             android:name=".MainActivity"
 

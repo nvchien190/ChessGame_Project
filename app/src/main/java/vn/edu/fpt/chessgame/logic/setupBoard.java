@@ -43,6 +43,12 @@ public class setupBoard {
         board[7][6] = new Knight(ChessPiece.Color.WHITE);
         board[7][7] = new Rook(ChessPiece.Color.WHITE);
     }
+    private  void setupBoard(int n){
+        board = new ChessPiece[8][8];
+        board[1][1] = new Pawn(ChessPiece.Color.WHITE);
+  board[6][1] = new Pawn(ChessPiece.Color.BLACK);
+
+    }
 
     public ChessPiece[][] getBoard() {
         return board;

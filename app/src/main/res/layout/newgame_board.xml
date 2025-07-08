@@ -34,379 +34,379 @@
             android:id="@+id/R00"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values"
-            android:background="@color/colorBoardDark" />
+            android:background="@color/colorLightBoard" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R01"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R02"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R03"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R04"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R05"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
 
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R06"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R07"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
 
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R10"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R11"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R12"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R13"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R14"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R15"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R16"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R17"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R20"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R21"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R22"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R23"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R24"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R25"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R26"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R27"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R30"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R31"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R32"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R33"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R34"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R35"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R36"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R37"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R40"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R41"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R42"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R43"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R44"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R45"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R46"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R47"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R50"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R51"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R52"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R53"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R54"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R55"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R56"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R57"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R60"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R61"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R62"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R63"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R64"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R65"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R66"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R67"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R70"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R71"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R72"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R73"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R74"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R75"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardLight"
+            android:background="@color/colorDarkBoard"
             android:id="@+id/R76"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />
 
         <ImageView
-            android:background="@color/colorBoardDark"
+            android:background="@color/colorLightBoard"
             android:id="@+id/R77"
             android:layout_width="@dimen/square_values"
             android:layout_height="@dimen/square_values" />

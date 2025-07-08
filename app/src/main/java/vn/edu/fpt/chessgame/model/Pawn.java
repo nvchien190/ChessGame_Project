@@ -23,4 +23,5 @@ public class Pawn extends ChessPiece{
     public int getDrawableRes() {
         return (color == Color.WHITE) ? R.drawable.wpawn : R.drawable.bpawn;
     }
+
 }

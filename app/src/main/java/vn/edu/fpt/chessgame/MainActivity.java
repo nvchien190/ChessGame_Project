@@ -6,6 +6,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import vn.edu.fpt.chessgame.logic.StartGameActivity;
+
 public class MainActivity extends AppCompatActivity {
     private Button btnNewGame;
     @Override
@@ -16,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         btnNewGame = findViewById(R.id.buttonStart);
         btnNewGame.setOnClickListener(v -> {
             // Chuyển sang màn hình chơi mới
-            Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
+            Intent intent = new Intent(MainActivity.this, StartGameActivity.class);
             startActivity(intent);
         });
     }
