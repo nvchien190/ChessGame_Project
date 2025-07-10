@@ -33,13 +33,20 @@
         android:id="@+id/SecondLayout">
 
         <Button
-            android:text="Start Game"
+            android:id="@+id/buttonStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:id="@+id/buttonStart"
-            android:layout_margin="10dp"
-            android:background="@android:color/darker_gray" />
-
+            android:layout_margin="@dimen/buttonLayoutMargin"
+            android:background="@android:color/darker_gray"
+            android:text="@string/textStartGame2Player"
+            android:textColor="@color/colorTextButton" />
+        <Button
+            android:text="@string/textStartGameWithBot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/buttonLayoutMargin"
+            android:textColor="@color/colorTextButton"
+            android:id="@+id/buttonStartBot"
+            android:background="@android:color/holo_blue_dark" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

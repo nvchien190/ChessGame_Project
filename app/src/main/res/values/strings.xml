@@ -14,4 +14,6 @@
     <string name="selectPieceToPromotion">Chọn quân để phong</string>
     <string name="kingNotFound">Không tìm thấy vua</string>
     <string name="handleMoveCheckMate">🚫 Không thể đi vì vẫn bị chiếu</string>
+    <string name="textStartGame2Player">2 người chơi</string>
+    <string name="textStartGameWithBot">Chơi với máy</string>
 </resources>

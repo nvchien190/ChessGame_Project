@@ -121,6 +121,7 @@ public class StartGameActivity extends AppCompatActivity {
         Toast.makeText(this, "Đã chọn: " + piece.getClass().getSimpleName(), Toast.LENGTH_SHORT).show();
         highlightValidMoves(row, col);
     }
+
     private void onCellClicked(int row, int col) {
         ChessPiece piece = board[row][col];
 
@@ -207,8 +208,28 @@ public class StartGameActivity extends AppCompatActivity {
             return;
         }
 
+        // ✅ Di chuyển quân cờ
         board[row][col] = selectedPiece;
         board[selectedRow][selectedCol] = null;
+        selectedPiece.setHasMoved(true); // ✅ Áp dụng cho mọi quân cờ
+
+        // ✅ Xử lý nhập thành
+        if (selectedPiece instanceof King) {
+            if (selectedCol == 4 && col == 6) { // Nhập thành gần
+                board[row][5] = board[row][7];
+                board[row][7] = null;
+                if (board[row][5] instanceof Rook) {
+                    ((Rook) board[row][5]).setHasMoved(true);
+                }
+            } else if (selectedCol == 4 && col == 2) { // Nhập thành xa
+                board[row][3] = board[row][0];
+                board[row][0] = null;
+                if (board[row][3] instanceof Rook) {
+                    ((Rook) board[row][3]).setHasMoved(true);
+                }
+            }
+        }
+
         renderPiecesToBoard();
 
         if (selectedPiece instanceof Pawn && (row == 0 || row == 7)) {
@@ -221,7 +242,9 @@ public class StartGameActivity extends AppCompatActivity {
         checkForCheckOrCheckmate();
     }
 
-   /*Tô nước đi hợp lệ*/
+
+
+    /*Tô nước đi hợp lệ*/
     private void highlightValidMoves(int row, int col) {
         ChessPiece piece = board[row][col];
         if (piece == null) return;

@@ -7,9 +7,12 @@
     <color name="colorDarkBoard">#f0ba8c29</color>
     <color name="colorDanger">#a2ce2a7c</color>
     <color name="colorKingInDanger">#8dff0004</color>
+    <color name="colorBackgroundEndGame">#AAFF0000</color>
     <color name="colorChoosePieces">#F90CD905</color>
     <color name="colorSelectedPiece">#8833B5E5</color>
     <color name="colorTextEndGame">#ffffff</color>
+    <color name="colorTextButton">#ffffff</color>
+    <color name="textLinkStartGame">#ff6750a4</color>
 
 
 </resources>

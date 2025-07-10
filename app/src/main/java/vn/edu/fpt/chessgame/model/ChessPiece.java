@@ -8,6 +8,10 @@ public abstract class ChessPiece {
     }
 
     protected Color color;
+    protected boolean hasMoved = false;
+
+
+
 
     public ChessPiece(Color color) {
         this.color = color;
@@ -24,4 +28,11 @@ public abstract class ChessPiece {
     @NonNull
     public abstract ChessPiece clone();
 
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean moved) {
+        this.hasMoved = moved;
+    }
 }

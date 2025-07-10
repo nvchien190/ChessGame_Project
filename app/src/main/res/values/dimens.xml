@@ -5,8 +5,12 @@
     <dimen name="square_values">42dp</dimen>
     <dimen name="chess_piece_size">40dp</dimen>
     <dimen name="textViewTurn">18sp</dimen>
-    <dimen name="margintopTurn">16dp</dimen>
+    <dimen name="marginTopTurn">16dp</dimen>
     <dimen name="textEndGame">24sp</dimen>
     <dimen name="marginBTextEndGame">64dp</dimen>
     <dimen name="marginTExitButton">24dp</dimen>
+    <!-- Image promotion width, height-->
+    <dimen name="choiceImageWidth">40dp</dimen>
+    <dimen name="choiceImageHeight">40dp</dimen>
+    <dimen name="buttonLayoutMargin">30dp</dimen>
 </resources>

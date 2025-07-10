@@ -3,6 +3,9 @@ package vn.edu.fpt.chessgame.model;
 import vn.edu.fpt.chessgame.R;
 
 public class Rook extends ChessPiece{
+    private boolean hasMoved = false;
+
+
     public Rook(Color color) {
         super(color);
     }
@@ -43,6 +46,15 @@ public class Rook extends ChessPiece{
     @Override
     public ChessPiece clone() {
         return new Rook(this.getColor());
+    }
+
+    //Nhập thành
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean moved) {
+        this.hasMoved = moved;
     }
 
 }
