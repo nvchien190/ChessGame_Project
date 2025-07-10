@@ -13,7 +13,7 @@ public class setupBoard {
 
     public setupBoard() {
         board = new ChessPiece[8][8];
-        setupBoard(0);
+        setupBoard();
     }
 
     private void setupBoard() {

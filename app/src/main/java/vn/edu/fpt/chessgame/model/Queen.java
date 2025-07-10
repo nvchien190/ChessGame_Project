@@ -48,5 +48,10 @@ public class Queen extends ChessPiece{
     public ChessPiece clone() {
         return new Queen(this.getColor());
     }
+    @Override
+    public Type getType() {
+        return Type.QUEEN;
+    }
+
 
 }

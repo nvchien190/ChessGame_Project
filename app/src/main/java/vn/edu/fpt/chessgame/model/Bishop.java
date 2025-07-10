@@ -44,5 +44,9 @@ public class Bishop extends  ChessPiece{
     public ChessPiece clone() {
         return new Bishop(this.getColor());
     }
+    @Override
+    public Type getType() {
+        return Type.BISHOP;
+    }
 
 }

@@ -56,5 +56,9 @@ public class Rook extends ChessPiece{
     public void setHasMoved(boolean moved) {
         this.hasMoved = moved;
     }
+    @Override
+    public Type getType() {
+        return Type.ROOK;
+    }
 
 }

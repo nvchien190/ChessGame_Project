@@ -27,5 +27,9 @@ public class Pawn extends ChessPiece{
     public ChessPiece clone() {
         return new Pawn(this.getColor());
     }
+    @Override
+    public Type getType() {
+        return Type.PAWN;
+    }
 
 }

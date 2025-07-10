@@ -299,7 +299,7 @@ public class StartGameActivity extends AppCompatActivity {
 
     /*Chọn cờ phong*/
     private void showPromotionDialog(int row, int col, ChessPiece.Color color) {
-        String[] options = {"Hậu", "Xe", "Tượng", "Mã"};
+        String[] options = {getResources().getString(R.string.textQueen), getResources().getString(R.string.textRook), getResources().getString(R.string.textBishop), getResources().getString(R.string.textKnight)};
         int[] imageResIds = {
                 color == ChessPiece.Color.WHITE ? R.drawable.wqueen : R.drawable.bqueen,
                 color == ChessPiece.Color.WHITE ? R.drawable.wrook : R.drawable.brook,

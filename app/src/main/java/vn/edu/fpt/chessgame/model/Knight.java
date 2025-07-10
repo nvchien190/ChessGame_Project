@@ -22,5 +22,9 @@ public class Knight extends ChessPiece{
     public ChessPiece clone() {
         return new Knight(this.getColor());
     }
+    @Override
+    public Type getType() {
+        return Type.KNIGHT;
+    }
 
 }

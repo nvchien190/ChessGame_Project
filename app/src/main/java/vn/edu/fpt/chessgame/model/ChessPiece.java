@@ -3,6 +3,10 @@ package vn.edu.fpt.chessgame.model;
 import androidx.annotation.NonNull;
 
 public abstract class ChessPiece {
+    public enum Type {
+        KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN
+    }
+
     public enum Color {
         WHITE, BLACK
     }
@@ -24,6 +28,7 @@ public abstract class ChessPiece {
     public abstract boolean isValidMove(int startRow, int startCol, int endRow, int endCol, ChessPiece[][] board);
 
     public abstract int getDrawableRes();
+    public abstract Type getType();
 
     @NonNull
     public abstract ChessPiece clone();
@@ -35,4 +40,5 @@ public abstract class ChessPiece {
     public void setHasMoved(boolean moved) {
         this.hasMoved = moved;
     }
+
 }

@@ -5,8 +5,8 @@
     <string name="white_win">♛ Trắng thắng! Kết thúc ván cờ!</string>
     <string name="black_win">♛ Đen thắng! Kết thúc ván cờ!</string>
     <string name="notYetMove">🚫 Không phải lượt của bạn</string>
-    <string name="checkmateEnd">"♛ Chiếu hết!</string>
-    <string name="checkmate">"♛ Chiếu tướng!</string>
+    <string name="checkmateEnd">♛ Chiếu hết!</string>
+    <string name="checkmate">♛ Chiếu tướng!</string>
     <string name="textPlayAgain">Chơi lại</string>
     <string name="notAllowKill">🚫 Không thể ăn quân cùng màu</string>
     <string name="textExitButton">Thoát</string>
@@ -16,4 +16,8 @@
     <string name="handleMoveCheckMate">🚫 Không thể đi vì vẫn bị chiếu</string>
     <string name="textStartGame2Player">2 người chơi</string>
     <string name="textStartGameWithBot">Chơi với máy</string>
+    <string name="textQueen">Hậu</string>
+    <string name="textRook">Xe</string>
+    <string name="textBishop">Tượng</string>
+    <string name="textKnight">Mã</string>
 </resources>
