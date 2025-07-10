@@ -34,27 +34,34 @@ public class StartGameActivity extends AppCompatActivity {
     private boolean isWhiteTurn = true;
     private TextView turnTextView;
     private List<ImageView> highlightedCells = new ArrayList<>();
-
+    private boolean isPlayingWithBot = false;
     private int selectedRow = -1, selectedCol = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newgame_board);
+        // Nhận cờ hiệu từ MainActivity
+        isPlayingWithBot = getIntent().getBooleanExtra("playWithBot", false);
+        isWhiteTurn = true;
 
-        // 1. Setup dữ liệu bàn cờ
+        // Khởi tạo bàn cờ bằng setupBoard
         setupBoard setup = new setupBoard();
         board = setup.getBoard();
 
-        // 2. Hiển thị quân cờ lên bàn cờ
+        // Hiển thị quân cờ
         renderPiecesToBoard();
 
-//        //3. Click chọn buoc đi
+        // Gán sự kiện click cho các ô
         setupCellClickListeners();
 
-        //
+        // Hiển thị lượt đi
         turnTextView = findViewById(R.id.turnTextView);
         turnTextView.setText(getString(R.string.textTurnWhite));
+
+        if (isPlayingWithBot) {
+            Toast.makeText(this, "Bạn chơi trắng. Bot sẽ đi sau bạn.", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -135,7 +142,7 @@ public class StartGameActivity extends AppCompatActivity {
             if (selectedPiece != null && selectedPiece.isValidMove(selectedRow, selectedCol, row, col, board)) {
                 handleMove(row, col);
             } else {
-                Toast.makeText(this, getResources().getString(R.string.invalidMove), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getResources().getString(R.string.invalidMove), Toast.LENGTH_SHORT).show();
             }
 
             selectedRow = -1;
@@ -239,6 +246,20 @@ public class StartGameActivity extends AppCompatActivity {
         isWhiteTurn = !isWhiteTurn;
         turnTextView.setText(isWhiteTurn ? R.string.textTurnWhite : R.string.textTurnBlack);
 
+        // Nếu đang chơi với bot và đến lượt đen
+        if (isPlayingWithBot && !isWhiteTurn) {
+            String fen = generateFEN();
+            new Thread(() -> {
+                String bestMove = StockfishApiHelper.getBestMove(fen);
+                runOnUiThread(() -> {
+                    if (bestMove != null) {
+                        botMove(bestMove);
+                    } else {
+                        Toast.makeText(this, "Bot không phản hồi!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }).start();
+        }
         checkForCheckOrCheckmate();
     }
 
@@ -420,6 +441,68 @@ public class StartGameActivity extends AppCompatActivity {
         return true; // Không có nước nào để thoát → chiếu hết
     }
 
+    private void botMove(String moveStr) {
+        int fromCol = fileToCol(moveStr.charAt(0));
+        int fromRow = rankToRow(moveStr.charAt(1));
+        int toCol = fileToCol(moveStr.charAt(2));
+        int toRow = rankToRow(moveStr.charAt(3));
+
+        selectedRow = fromRow;
+        selectedCol = fromCol;
+
+        handleMove(toRow, toCol);
+    }
+    public String generateFEN() {
+        StringBuilder fen = new StringBuilder();
+
+        for (int row = 0; row < 8; row++) {
+            int empty = 0;
+            for (int col = 0; col < 8; col++) {
+                ChessPiece piece = board[row][col];
+                if (piece == null) {
+                    empty++;
+                } else {
+                    if (empty > 0) {
+                        fen.append(empty);
+                        empty = 0;
+                    }
+                    fen.append(getPieceSymbol(piece));
+                }
+            }
+            if (empty > 0) fen.append(empty);
+            if (row < 7) fen.append('/');
+        }
+
+        fen.append(isWhiteTurn ? " w " : " b ");
+        fen.append("- - 0 1");
+
+        return fen.toString();
+    }
+    private int fileToCol(char file) {
+        return file - 'a';
+    }
+
+    private int rankToRow(char rank) {
+        return 8 - Character.getNumericValue(rank);
+    }
+
+    private char getPieceSymbol(ChessPiece piece) {
+        ChessPiece.Type type = piece.getType();
+        ChessPiece.Color color = piece.getColor();
+
+        char symbol;
+        switch (type) {
+            case PAWN:   symbol = 'p'; break;
+            case KNIGHT: symbol = 'n'; break;
+            case BISHOP: symbol = 'b'; break;
+            case ROOK:   symbol = 'r'; break;
+            case QUEEN:  symbol = 'q'; break;
+            case KING:   symbol = 'k'; break;
+            default:     symbol = '?'; break;
+        }
+
+        return (color == ChessPiece.Color.WHITE) ? Character.toUpperCase(symbol) : symbol;
+    }
 
 
 

@@ -3,24 +3,39 @@ package vn.edu.fpt.chessgame;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import vn.edu.fpt.chessgame.logic.StartGameActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnNewGame;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // layout chính của menu
 
-        btnNewGame = findViewById(R.id.buttonStart);
-        btnNewGame.setOnClickListener(v -> {
-            // Chuyển sang màn hình chơi mới
+        Button button2Player = findViewById(R.id.buttonStart);
+
+
+        button2Player.setOnClickListener(v -> {
+            // TODO: Chuyển sang chế độ 2 người chơi
+            Toast.makeText(this, "Chế độ 2 người chơi", Toast.LENGTH_SHORT).show();
+        });
+
+
+        Button buttonStartBot = findViewById(R.id.buttonStartBot);
+
+        buttonStartBot.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, StartGameActivity.class);
+            intent.putExtra("playWithBot", true); // truyền cờ hiệu
             startActivity(intent);
         });
+
+
+
     }
+
 
 }

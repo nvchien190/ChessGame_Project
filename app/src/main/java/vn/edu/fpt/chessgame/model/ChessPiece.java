@@ -41,4 +41,6 @@ public abstract class ChessPiece {
         this.hasMoved = moved;
     }
 
+
+
 }
