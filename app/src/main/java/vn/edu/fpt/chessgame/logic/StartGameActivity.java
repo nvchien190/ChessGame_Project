@@ -2,6 +2,7 @@ package vn.edu.fpt.chessgame.logic;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,11 @@ public class StartGameActivity extends AppCompatActivity {
     private List<ImageView> highlightedCells = new ArrayList<>();
     private boolean isPlayingWithBot = false;
     private int selectedRow = -1, selectedCol = -1;
+    private int lastFromRow = -1, lastFromCol = -1;
+    private int lastToRow = -1, lastToCol = -1;
+    private List<Point> moveHints = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,21 +80,56 @@ public class StartGameActivity extends AppCompatActivity {
                 ImageView cell = findViewById(viewId);
                 if (cell == null) continue;
 
+                // 1. Nền mặc định (đen/trắng)
+                cell.setBackgroundColor(getDefaultColor(row, col));
+
+                // 2. (Tuỳ chọn) Highlight ô hợp lệ để đi
+                if (moveHints != null && moveHints.contains(new Point(row, col))) {
+                    cell.setBackgroundColor(Color.parseColor("#90EE90")); // Xanh nhạt
+                }
+
+                // 3. Tạo viền nếu cần
+                GradientDrawable border = null;
+
+                // 3a. Ô đang được chọn → viền xanh
+                if (row == selectedRow && col == selectedCol) {
+                    border = new GradientDrawable();
+                    border.setColor(Color.TRANSPARENT);
+                    border.setStroke(6, Color.parseColor("#00BFFF")); // Xanh dương
+                    border.setCornerRadius(6f);
+                }
+
+                // 3b. Nước vừa đi → viền vàng (ưu tiên thấp hơn ô đang chọn)
+                else if ((row == lastFromRow && col == lastFromCol) ||
+                        (row == lastToRow && col == lastToCol)) {
+                    border = new GradientDrawable();
+                    border.setColor(Color.TRANSPARENT);
+                    border.setStroke(6, ContextCompat.getColor(this, R.color.colorPrimaryDark)); // ✅ đúng cách
+                    border.setCornerRadius(6f);
+                }
+
+
+                // 4. Áp dụng viền
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    cell.setForeground(border);
+                } else if (border != null) {
+                    cell.setBackground(border); // fallback nếu cần
+                } else {
+                    cell.setForeground(null); // xoá viền nếu không cần
+                }
+
+                // 5. Hiển thị quân cờ
                 ChessPiece piece = board[row][col];
                 if (piece != null) {
                     cell.setImageResource(piece.getDrawableRes());
-                    // Xoay cờ đen
-                    if (piece.getColor() == ChessPiece.Color.BLACK) {
-                        cell.setRotation(180f);
-                    } else {
-                        cell.setRotation(0f);
-                    }
+                    cell.setRotation(piece.getColor() == ChessPiece.Color.BLACK ? 180f : 0f);
                 } else {
-                    cell.setImageDrawable(null); // Xóa hình cũ nếu không có quân
+                    cell.setImageDrawable(null);
                 }
             }
         }
     }
+
 
     private void setupCellClickListeners() {
         for (int row = 0; row < 8; row++) {
@@ -198,6 +240,38 @@ public class StartGameActivity extends AppCompatActivity {
 
     /*Ktra nước đi hợp lệ khi bị chiếu*/
     private void handleMove(int row, int col) {
+        ChessPiece clickedPiece = board[row][col];
+
+        // 1. Nếu chưa chọn quân
+        if (selectedRow == -1 && clickedPiece != null) {
+            if ((isWhiteTurn && clickedPiece.getColor() == ChessPiece.Color.WHITE) ||
+                    (!isWhiteTurn && clickedPiece.getColor() == ChessPiece.Color.BLACK)) {
+
+                selectedRow = row;
+                selectedCol = col;
+
+                clearHighlights();
+                moveHints.clear();
+
+                highlightValidMoves(row, col); // Hiển thị các ô hợp lệ
+                renderPiecesToBoard();
+            } else {
+                Toast.makeText(this, "Không phải lượt của bạn!", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+
+        // 2. Nếu đã chọn quân và bấm lại chính nó → bỏ chọn
+        if (selectedRow == row && selectedCol == col) {
+            selectedRow = -1;
+            selectedCol = -1;
+            clearHighlights();
+            moveHints.clear();
+            renderPiecesToBoard();
+            return;
+        }
+
+        // 3. Nếu đã chọn quân và chọn ô đích
         ChessPiece selectedPiece = board[selectedRow][selectedCol];
         ChessPiece target = board[row][col];
 
@@ -206,6 +280,7 @@ public class StartGameActivity extends AppCompatActivity {
             return;
         }
 
+        // 4. Kiểm tra chiếu hậu
         ChessPiece[][] tempBoard = cloneBoard(board);
         tempBoard[row][col] = tempBoard[selectedRow][selectedCol];
         tempBoard[selectedRow][selectedCol] = null;
@@ -215,20 +290,34 @@ public class StartGameActivity extends AppCompatActivity {
             return;
         }
 
-        // ✅ Di chuyển quân cờ
+        // 5. Di chuyển quân
         board[row][col] = selectedPiece;
         board[selectedRow][selectedCol] = null;
-        selectedPiece.setHasMoved(true); // ✅ Áp dụng cho mọi quân cờ
+        selectedPiece.setHasMoved(true);
 
-        // ✅ Xử lý nhập thành
+        // ✅ Cập nhật nước vừa đi để highlight
+        lastFromRow = selectedRow;
+        lastFromCol = selectedCol;
+        lastToRow = row;
+        lastToCol = col;
+
+        // ✅ Xóa highlight cũ
+        clearHighlights();
+        moveHints.clear();
+
+        // ✅ Reset chọn
+        selectedRow = -1;
+        selectedCol = -1;
+
+        // 6. Nhập thành
         if (selectedPiece instanceof King) {
-            if (selectedCol == 4 && col == 6) { // Nhập thành gần
+            if (selectedCol == 4 && col == 6) {
                 board[row][5] = board[row][7];
                 board[row][7] = null;
                 if (board[row][5] instanceof Rook) {
                     ((Rook) board[row][5]).setHasMoved(true);
                 }
-            } else if (selectedCol == 4 && col == 2) { // Nhập thành xa
+            } else if (selectedCol == 4 && col == 2) {
                 board[row][3] = board[row][0];
                 board[row][0] = null;
                 if (board[row][3] instanceof Rook) {
@@ -237,16 +326,19 @@ public class StartGameActivity extends AppCompatActivity {
             }
         }
 
+        // 7. Cập nhật bàn cờ
         renderPiecesToBoard();
 
+        // 8. Phong cấp tốt
         if (selectedPiece instanceof Pawn && (row == 0 || row == 7)) {
             showPromotionDialog(row, col, selectedPiece.getColor());
         }
 
+        // 9. Đổi lượt
         isWhiteTurn = !isWhiteTurn;
         turnTextView.setText(isWhiteTurn ? R.string.textTurnWhite : R.string.textTurnBlack);
 
-        // Nếu đang chơi với bot và đến lượt đen
+        // 10. Nếu chơi với bot và đến lượt bot
         if (isPlayingWithBot && !isWhiteTurn) {
             String fen = generateFEN();
             new Thread(() -> {
@@ -260,8 +352,33 @@ public class StartGameActivity extends AppCompatActivity {
                 });
             }).start();
         }
+
+        // 11. Kiểm tra chiếu hoặc chiếu hết
         checkForCheckOrCheckmate();
     }
+    private View getCellAt(int row, int col) {
+        String cellId = "cell_" + row + "_" + col;
+        int resId = getResources().getIdentifier(cellId, "id", getPackageName());
+        return findViewById(resId);
+    }
+    private void resetCellColors() {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                View cell = getCellAt(row, col);
+                if (cell != null) {
+                    cell.setBackgroundColor(getDefaultColor(row, col));
+                }
+            }
+        }
+    }
+    private int getDefaultColor(int row, int col) {
+        boolean isWhite = (row + col) % 2 == 0;
+        int colorRes = isWhite ? R.color.colorLightBoard : R.color.colorDarkBoard;
+        return ContextCompat.getColor(this, colorRes);
+    }
+
+
+
 
 
 

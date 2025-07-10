@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "515625715153",
+    "project_id": "chessgame-e626e",
+    "storage_bucket": "chessgame-e626e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515625715153:android:ed098ae6ed24a99e9b4cf0",
+        "android_client_info": {
+          "package_name": "vn.edu.fpt.chessgame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu0GTSgrHAtyZiqHFocFiZqdCHrC-8H6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

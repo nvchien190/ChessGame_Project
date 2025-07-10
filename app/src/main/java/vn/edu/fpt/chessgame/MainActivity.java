@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         button2Player.setOnClickListener(v -> {
-            // TODO: Chuyển sang chế độ 2 người chơi
-            Toast.makeText(this, "Chế độ 2 người chơi", Toast.LENGTH_SHORT).show();
-        });
+            Intent intent = new Intent(MainActivity.this, StartGameActivity.class);
+            intent.putExtra("playWithBot", false); // ✅ truyền false để chơi 2 người
+            startActivity(intent);   });
 
 
         Button buttonStartBot = findViewById(R.id.buttonStartBot);
