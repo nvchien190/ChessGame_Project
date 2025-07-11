@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         Button button2Player = findViewById(R.id.buttonStart);
         Button buttonStartBot = findViewById(R.id.buttonStartBot);
 
-        // 2 người 1 máy
+        // 2 người
         button2Player.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, StartGameActivity.class);
             intent.putExtra("isOnline", false);         // 👈 chơi offline

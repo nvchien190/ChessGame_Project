@@ -88,5 +88,13 @@ public class OnlineChessManager {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         Log.d("OnlineChessManager", msg);
     }
+    public void sendSurrender(String matchId) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("matches")
+                .child(matchId);
+
+        ref.child("status").setValue("surrendered");
+        // Có thể thêm: ref.child("endedBy").setValue("localTest");
+    }
 
 }

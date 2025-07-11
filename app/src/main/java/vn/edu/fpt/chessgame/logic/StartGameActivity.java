@@ -7,6 +7,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -67,7 +69,33 @@ public class StartGameActivity extends AppCompatActivity {
         initVariables();        // Khởi tạo biến từ intent
         setupBoardAndUI();      // Khởi tạo bàn cờ và giao diện
         setupGameMode();        // Xử lý theo chế độ chơi (bot / online)
+
+
     }
+    private GameOptionsMenuManager menuManager;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.game_menu, menu);
+
+        menuManager = new GameOptionsMenuManager(
+                this,
+                isOnlineMode,
+                isPlayingWithBot,
+                matchId,
+                manager,
+                this::setupBoardAndUI // truyền callback khởi động lại
+        );
+
+        menuManager.prepare(menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return menuManager != null && menuManager.handle(item) || super.onOptionsItemSelected(item);
+    }
+
 
 
     private void initVariables() {
@@ -83,7 +111,7 @@ public class StartGameActivity extends AppCompatActivity {
         manager = isOnlineMode ? new OnlineChessManager(this) : null;
     }
 
-    private void setupBoardAndUI() {
+    public void setupBoardAndUI() {
         setupBoard setup = new setupBoard();
         board = setup.getBoard();
         View boardLayout = findViewById(R.id.gridLayoutBoard); // thay bằng đúng ID layout của bàn
