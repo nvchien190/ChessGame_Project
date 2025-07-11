@@ -15,9 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,7 @@ import vn.edu.fpt.chessgame.model.Bishop;
 import vn.edu.fpt.chessgame.model.ChessPiece;
 import vn.edu.fpt.chessgame.model.King;
 import vn.edu.fpt.chessgame.model.Knight;
+import vn.edu.fpt.chessgame.model.Match;
 import vn.edu.fpt.chessgame.model.Pawn;
 import vn.edu.fpt.chessgame.model.Queen;
 import vn.edu.fpt.chessgame.model.Rook;
@@ -41,6 +47,12 @@ public class StartGameActivity extends AppCompatActivity {
     private int lastFromRow = -1, lastFromCol = -1;
     private int lastToRow = -1, lastToCol = -1;
     private List<Point> moveHints = new ArrayList<>();
+    private String uid;
+
+    private boolean isWhiteSide = true;           // Người chơi này có quân trắng?
+    private boolean isOnlineMode = false;         // Đang chơi online?
+    private String matchId = "";                  // ID của phòng đấu
+    private OnlineChessManager manager;           // Để tương tác Firebase
 
 
 
@@ -49,28 +61,111 @@ public class StartGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newgame_board);
         // Nhận cờ hiệu từ MainActivity
+        isOnlineMode = getIntent().getBooleanExtra("isOnline", false);
         isPlayingWithBot = getIntent().getBooleanExtra("playWithBot", false);
-        isWhiteTurn = true;
 
-        // Khởi tạo bàn cờ bằng setupBoard
+        initVariables();        // Khởi tạo biến từ intent
+        setupBoardAndUI();      // Khởi tạo bàn cờ và giao diện
+        setupGameMode();        // Xử lý theo chế độ chơi (bot / online)
+    }
+
+
+    private void initVariables() {
+
+        Intent intent = getIntent();
+        isOnlineMode = intent.getBooleanExtra("isOnline", false);
+        matchId = intent.getStringExtra("matchId");
+        uid = getIntent().getStringExtra("uid"); // ✅ THÊM VÀO ĐÂY
+
+
+        if (matchId == null) matchId = "";
+        isWhiteTurn = true;
+        manager = isOnlineMode ? new OnlineChessManager(this) : null;
+    }
+
+    private void setupBoardAndUI() {
         setupBoard setup = new setupBoard();
         board = setup.getBoard();
 
-        // Hiển thị quân cờ
         renderPiecesToBoard();
-
-        // Gán sự kiện click cho các ô
         setupCellClickListeners();
 
-        // Hiển thị lượt đi
         turnTextView = findViewById(R.id.turnTextView);
-        turnTextView.setText(getString(R.string.textTurnWhite));
-
+    }
+    private void setupGameMode() {
         if (isPlayingWithBot) {
+            // ⚔️ Chế độ chơi với Bot
+            isWhiteSide = true; // người chơi là trắng
+            isWhiteTurn = true;
+            turnTextView.setText("Lượt bạn đi");
             Toast.makeText(this, "Bạn chơi trắng. Bot sẽ đi sau bạn.", Toast.LENGTH_SHORT).show();
+            return;
         }
 
+        if (isOnlineMode) {
+            // 🌐 Chế độ chơi online
+            if (manager != null && matchId != null && !matchId.isEmpty()) {
+                startOnlineSync(uid);
+            }
+            return;
+        }
+
+        // 👥 Chế độ 2 người 1 máy
+        isWhiteSide = true; // người đầu tiên là trắng
+        isWhiteTurn = true;
+        turnTextView.setText("Lượt Trắng đi");
+        Toast.makeText(this, "Chế độ 2 người 1 máy đang hoạt động.", Toast.LENGTH_SHORT).show();
     }
+
+    private void startOnlineSync(String currentUid) {
+        manager.listenMatch(matchId, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Match match = snapshot.getValue(Match.class);
+                if (match == null || currentUid == null) return;
+
+                // 🎯 Xác định bên chơi (Trắng / Đen)
+                isWhiteSide = currentUid.equals(match.whitePlayer);
+                isWhiteTurn = match.turn.equals("white");
+                boolean isMyTurn = (isWhiteSide && isWhiteTurn) || (!isWhiteSide && !isWhiteTurn);
+
+              // ⛔ Nếu không phải lượt mình, thì bên kia vừa đi → cập nhật bàn cờ
+                if (!isMyTurn && match.board != null && !match.board.isEmpty()) {
+                    applyBoardFromFEN(match.board);
+                    renderPiecesToBoard();
+                }
+
+                // 🎯 Dựng lại bàn cờ nếu có dữ liệu FEN
+                if (match.board != null && !match.board.isEmpty()) {
+                    applyBoardFromFEN(match.board);     // ✅ từ FEN → board[][]
+                    renderPiecesToBoard();              // ✅ vẽ lại giao diện
+                }
+
+                updateTurnUI(); // ✅ tách riêng phần hiển thị lượt
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(StartGameActivity.this, "Lỗi Firebase: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void updateTurnUI() {
+        if ((isWhiteSide && isWhiteTurn) || (!isWhiteSide && !isWhiteTurn)) {
+            turnTextView.setText("Lượt bạn đi");
+        } else {
+            turnTextView.setText("Chờ đối thủ đi");
+        }
+
+        String roleText = isWhiteSide ? "Bạn là quân Trắng." : "Bạn là quân Đen.";
+        Toast.makeText(this, roleText, Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
+
+
 
     private void renderPiecesToBoard() {
         for (int row = 0; row < 8; row++) {
@@ -240,20 +335,24 @@ public class StartGameActivity extends AppCompatActivity {
 
     /*Ktra nước đi hợp lệ khi bị chiếu*/
     private void handleMove(int row, int col) {
+        if (isOnlineMode && !((isWhiteSide && isWhiteTurn) || (!isWhiteSide && !isWhiteTurn))) {
+            Toast.makeText(this, "⛔ Chưa đến lượt bạn!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         ChessPiece clickedPiece = board[row][col];
 
-        // 1. Nếu chưa chọn quân
+        // 1. Chưa chọn quân → chọn quân
         if (selectedRow == -1 && clickedPiece != null) {
             if ((isWhiteTurn && clickedPiece.getColor() == ChessPiece.Color.WHITE) ||
                     (!isWhiteTurn && clickedPiece.getColor() == ChessPiece.Color.BLACK)) {
-
                 selectedRow = row;
                 selectedCol = col;
 
                 clearHighlights();
                 moveHints.clear();
 
-                highlightValidMoves(row, col); // Hiển thị các ô hợp lệ
+                highlightValidMoves(row, col);
                 renderPiecesToBoard();
             } else {
                 Toast.makeText(this, "Không phải lượt của bạn!", Toast.LENGTH_SHORT).show();
@@ -261,7 +360,7 @@ public class StartGameActivity extends AppCompatActivity {
             return;
         }
 
-        // 2. Nếu đã chọn quân và bấm lại chính nó → bỏ chọn
+        // 2. Bấm lại quân đang chọn → bỏ chọn
         if (selectedRow == row && selectedCol == col) {
             selectedRow = -1;
             selectedCol = -1;
@@ -271,62 +370,74 @@ public class StartGameActivity extends AppCompatActivity {
             return;
         }
 
-        // 3. Nếu đã chọn quân và chọn ô đích
         ChessPiece selectedPiece = board[selectedRow][selectedCol];
         ChessPiece target = board[row][col];
 
+        // 3. Không được ăn quân cùng màu
         if (target != null && target.getColor() == selectedPiece.getColor()) {
-            Toast.makeText(this, getResources().getString(R.string.notAllowKill), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.notAllowKill), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 4. Kiểm tra chiếu hậu
+        // 4. Kiểm tra chiếu hậu nếu đi quân đó
         ChessPiece[][] tempBoard = cloneBoard(board);
         tempBoard[row][col] = tempBoard[selectedRow][selectedCol];
         tempBoard[selectedRow][selectedCol] = null;
 
         if (isKingInCheckAfterMove(tempBoard, selectedPiece.getColor())) {
-            Toast.makeText(this, getResources().getString(R.string.handleMoveCheckMate), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.handleMoveCheckMate), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 5. Di chuyển quân
-        board[row][col] = selectedPiece;
-        board[selectedRow][selectedCol] = null;
-        selectedPiece.setHasMoved(true);
+        // 5. Kiểm tra nhập thành trước khi di chuyển quân
+        boolean isCastling = false;
+        if (selectedPiece instanceof King && Math.abs(col - selectedCol) == 2) {
+            // Nhập thành gần
+            if (col == 6) {
+                board[row][6] = selectedPiece;
+                board[row][4] = null;
+                board[row][5] = board[row][7];
+                board[row][7] = null;
 
-        // ✅ Cập nhật nước vừa đi để highlight
+                selectedPiece.setHasMoved(true);
+                if (board[row][5] instanceof Rook) {
+                    ((Rook) board[row][5]).setHasMoved(true);
+                }
+                isCastling = true;
+            }
+            // Nhập thành xa
+            else if (col == 2) {
+                board[row][2] = selectedPiece;
+                board[row][4] = null;
+                board[row][3] = board[row][0];
+                board[row][0] = null;
+
+                selectedPiece.setHasMoved(true);
+                if (board[row][3] instanceof Rook) {
+                    ((Rook) board[row][3]).setHasMoved(true);
+                }
+                isCastling = true;
+            }
+        }
+
+        // 6. Di chuyển quân nếu không phải nhập thành
+        if (!isCastling) {
+            board[row][col] = selectedPiece;
+            board[selectedRow][selectedCol] = null;
+            selectedPiece.setHasMoved(true);
+        }
+
+        // 7. Cập nhật nước vừa đi
         lastFromRow = selectedRow;
         lastFromCol = selectedCol;
         lastToRow = row;
         lastToCol = col;
 
-        // ✅ Xóa highlight cũ
         clearHighlights();
         moveHints.clear();
-
-        // ✅ Reset chọn
         selectedRow = -1;
         selectedCol = -1;
 
-        // 6. Nhập thành
-        if (selectedPiece instanceof King) {
-            if (selectedCol == 4 && col == 6) {
-                board[row][5] = board[row][7];
-                board[row][7] = null;
-                if (board[row][5] instanceof Rook) {
-                    ((Rook) board[row][5]).setHasMoved(true);
-                }
-            } else if (selectedCol == 4 && col == 2) {
-                board[row][3] = board[row][0];
-                board[row][0] = null;
-                if (board[row][3] instanceof Rook) {
-                    ((Rook) board[row][3]).setHasMoved(true);
-                }
-            }
-        }
-
-        // 7. Cập nhật bàn cờ
         renderPiecesToBoard();
 
         // 8. Phong cấp tốt
@@ -338,7 +449,14 @@ public class StartGameActivity extends AppCompatActivity {
         isWhiteTurn = !isWhiteTurn;
         turnTextView.setText(isWhiteTurn ? R.string.textTurnWhite : R.string.textTurnBlack);
 
-        // 10. Nếu chơi với bot và đến lượt bot
+        // 10. Gửi nước đi lên Firebase nếu online
+        if (isOnlineMode && manager != null && matchId != null && !matchId.isEmpty()) {
+            String nextTurn = isWhiteTurn ? "white" : "black";
+            String boardState = generateFEN();
+            manager.sendMove(matchId, boardState, nextTurn);
+        }
+
+        // 11. Nếu chơi với Bot
         if (isPlayingWithBot && !isWhiteTurn) {
             String fen = generateFEN();
             new Thread(() -> {
@@ -353,9 +471,10 @@ public class StartGameActivity extends AppCompatActivity {
             }).start();
         }
 
-        // 11. Kiểm tra chiếu hoặc chiếu hết
+        // 12. Kiểm tra chiếu / chiếu hết
         checkForCheckOrCheckmate();
     }
+
     private View getCellAt(int row, int col) {
         String cellId = "cell_" + row + "_" + col;
         int resId = getResources().getIdentifier(cellId, "id", getPackageName());
@@ -622,6 +741,49 @@ public class StartGameActivity extends AppCompatActivity {
     }
 
 
+    private void applyBoardFromFEN(String fen) {
+        // 🧼 Xóa toàn bộ bàn cờ trước khi dựng mới
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                board[r][c] = null;
+            }
+        }
+
+        String[] parts = fen.split(" ");
+        if (parts.length < 1) return;
+
+        String boardPart = parts[0];  // phần bàn cờ: "rnbqkbnr/pppppppp/8/..."
+
+        String[] rows = boardPart.split("/");
+        if (rows.length != 8) return;
+
+        for (int row = 0; row < 8; row++) {
+            int col = 0;
+            for (int i = 0; i < rows[row].length(); i++) {
+                char c = rows[row].charAt(i);
+
+                if (Character.isDigit(c)) {
+                    col += Character.getNumericValue(c);  // số ô trống
+                } else {
+                    ChessPiece.Color color = Character.isUpperCase(c) ? ChessPiece.Color.WHITE : ChessPiece.Color.BLACK;
+                    ChessPiece piece = createPieceFromChar(c, color);  // 👇 dùng hàm phụ
+                    board[row][col] = piece;
+                    col++;
+                }
+            }
+        }
+    }
+    private ChessPiece createPieceFromChar(char c, ChessPiece.Color color) {
+        switch (Character.toLowerCase(c)) {
+            case 'p': return new Pawn(color);
+            case 'r': return new Rook(color);
+            case 'n': return new Knight(color);
+            case 'b': return new Bishop(color);
+            case 'q': return new Queen(color);
+            case 'k': return new King(color);
+            default: return null;
+        }
+    }
 
 
 
