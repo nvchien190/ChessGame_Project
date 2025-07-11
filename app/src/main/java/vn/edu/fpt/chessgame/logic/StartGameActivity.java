@@ -86,11 +86,16 @@ public class StartGameActivity extends AppCompatActivity {
     private void setupBoardAndUI() {
         setupBoard setup = new setupBoard();
         board = setup.getBoard();
+        View boardLayout = findViewById(R.id.gridLayoutBoard); // thay bằng đúng ID layout của bàn
+        if (isBoardFlipped()) {
+            boardLayout.setRotationX(180f); // xoay bàn nhìn từ dưới lên
+        }
 
         renderPiecesToBoard();
         setupCellClickListeners();
 
         turnTextView = findViewById(R.id.turnTextView);
+
     }
     private void setupGameMode() {
         if (isPlayingWithBot) {
@@ -170,7 +175,8 @@ public class StartGameActivity extends AppCompatActivity {
     private void renderPiecesToBoard() {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                String id = "R" + row + col;
+                String id = getCellId(row, col);
+
                 int viewId = getResources().getIdentifier(id, "id", getPackageName());
                 ImageView cell = findViewById(viewId);
                 if (cell == null) continue;
@@ -229,7 +235,8 @@ public class StartGameActivity extends AppCompatActivity {
     private void setupCellClickListeners() {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                String id = "R" + row + col;
+                String id = getCellId(row, col);
+
                 int resId = getResources().getIdentifier(id, "id", getPackageName());
                 ImageView cell = findViewById(resId);
                 if (cell == null) continue;
@@ -237,10 +244,19 @@ public class StartGameActivity extends AppCompatActivity {
                 // Gán tọa độ vào tag để dễ xử lý
                 cell.setTag(new int[]{row, col});
 
+                // Sự kiện khi click ô
                 cell.setOnClickListener(v -> {
-                    int[] pos = (int[]) v.getTag();
-                    onCellClicked(pos[0], pos[1]);
+                    int[] displayPos = (int[]) v.getTag();
+
+                    // 🔁 Xoay từ giao diện → sang logic nếu bên Đen online
+                    int clickedRow = isBoardFlipped() ? 7 - displayPos[0] : displayPos[0];
+                    int clickedCol = isBoardFlipped() ? 7 - displayPos[1] : displayPos[1];
+
+                    Log.d("Click", "Giao diện: (" + displayPos[0] + "," + displayPos[1] + ") → Logic: (" + clickedRow + "," + clickedCol + ")");
+
+                    onCellClicked(clickedRow, clickedCol);
                 });
+
             }
         }
     }
@@ -252,7 +268,8 @@ public class StartGameActivity extends AppCompatActivity {
             return;
         }
 
-        String id = "R" + row + col;
+        String id = getCellId(row, col);
+
         int viewId = getResources().getIdentifier(id, "id", getPackageName());
         ImageView cell = findViewById(viewId);
         if (cell != null) {
@@ -520,7 +537,8 @@ public class StartGameActivity extends AppCompatActivity {
                     } else {
                         continue;
                     }
-                    String id = "R" + r + c;
+                    String id = getCellId(r, c);
+
                     int viewId = getResources().getIdentifier(id, "id", getPackageName());
                     ImageView cell = findViewById(viewId);
                     if (cell != null) {
@@ -783,6 +801,14 @@ public class StartGameActivity extends AppCompatActivity {
             case 'k': return new King(color);
             default: return null;
         }
+    }
+    private boolean isBoardFlipped() {
+        return isOnlineMode && !isWhiteSide;
+    }
+    private String getCellId(int row, int col) {
+        int displayRow = isBoardFlipped() ? 7 - row : row;
+        int displayCol = isBoardFlipped() ? 7 - col : col;
+        return "R" + displayRow + "" + displayCol;
     }
 
 
