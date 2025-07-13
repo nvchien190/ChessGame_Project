@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ChessGame</string>
+
+    <string name="textStartGame2Player">2 players</string>
+    <string name="textStartGameWithBot">Play with the computer</string>
+    <string name="textStartGameOnline">Play Online</string>
+    <string name="textStartGameOnline2">Choose Online game mode</string>
+    <string name="newRoom">🔵 Create New Room</string>
+    <string name="joinRoom">🟢 Join Room</string>
+    <string name="textTurnWhite">Turn: White</string>
+    <string name="textTurnBlack">Turn: Black</string>
+    <string name="white_win">♛ White wins! Game over!</string>
+    <string name="black_win">♛ Black wins! Game over!</string>
+    <string name="notYetMove">🚫 Not your turn</string>
+    <string name="checkmateEnd">♛ Checkmate!</string>
+    <string name="checkmate">♛ Checkmate!</string>
+    <string name="textPlayAgain">Play again</string>
+    <string name="notAllowKill">🚫 Cannot capture pieces of the same color</string>
+    <string name="textExitButton">Exit</string>
+    <string name="invalidMove">❌ Invalid move</string>
+    <string name="selectPieceToPromotion">Select piece to promote</string>
+    <string name="kingNotFound">King not found</string>
+    <string name="handleMoveCheckMate">🚫 Cannot move because still in check</string>
+    <string name="textStartGame2PlayerActive">2 player mode is active.</string>
+    <string name="textQueen">Queen</string>
+    <string name="textRook">Rook</string>
+    <string name="textBishop">Bishop</string>
+    <string name="textKnight">Knight</string>
+    <string name="textStartWithBot">You play white. The bot will go after you.</string>
+    <string name="yourTurn">Your turn</string>
+    <string name="choose">Chosen: </string>
+    <string name="waitTurn">"⛔ It's not your turn yet!"</string>
+    <string name="waitBotResponse">"Bot hasn't responded yet, trying again..."</string>
+    <string name="longerBotResponse">"Bot hasn't responded after multiple attempts!"</string>
+    <string name="textUITurn">"Your turn"</string>
+    <string name="textUIOpponentTurn">"Waiting for opponent to go"</string>
+    <string name="textUIIsW">"You are White."</string>
+    <string name="textUIIsB">"You are Black."</string>
+    <string name="change_language">Change Language</string>
+    <string-array name="language_names">
+        <item>🇻🇳 Vietnamese</item>
+        <item>🇬🇧 English</item>
+    </string-array>
+
+</resources>

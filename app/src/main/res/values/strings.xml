@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">ChessGame</string>
+
+    <string name="textStartGame2Player">2 người chơi</string>
+    <string name="textStartGameWithBot">Chơi với máy</string>
+    <string name="textStartGameOnline">Chơi Online</string>
+    <string name="textStartGameOnline2">Chọn chế độ chơi Online</string>
+    <string name="newRoom">🔵 Tạo Phòng Mới</string>
+    <string name="joinRoom">🟢 Tham Gia Phòng</string>
     <string name="textTurnWhite">Lượt: Trắng</string>
     <string name="textTurnBlack">Lượt: Đen</string>
     <string name="white_win">♛ Trắng thắng! Kết thúc ván cờ!</string>
@@ -14,10 +21,26 @@
     <string name="selectPieceToPromotion">Chọn quân để phong</string>
     <string name="kingNotFound">Không tìm thấy vua</string>
     <string name="handleMoveCheckMate">🚫 Không thể đi vì vẫn bị chiếu</string>
-    <string name="textStartGame2Player">2 người chơi</string>
-    <string name="textStartGameWithBot">Chơi với máy</string>
+    <string name="textStartGame2PlayerActive">Chế độ 2 người chơi đang hoạt động.</string>
     <string name="textQueen">Hậu</string>
     <string name="textRook">Xe</string>
     <string name="textBishop">Tượng</string>
     <string name="textKnight">Mã</string>
+    <string name="textStartWithBot">Bạn chơi trắng. Bot sẽ đi sau bạn.</string>
+    <string name="yourTurn">Lượt bạn đi</string>
+    <string name="choose">Đã chọn: </string>
+    <string name="waitTurn">"⛔ Chưa đến lượt bạn!"</string>
+    <string name="waitBotResponse">"Bot chưa phản hồi, đang thử lại..."</string>
+    <string name="longerBotResponse">"Bot không phản hồi sau nhiều lần thử!"</string>
+    <string name="textUITurn">"Lượt bạn đi"</string>
+    <string name="textUIOpponentTurn">"Chờ đối thủ đi"</string>
+    <string name="textUIIsW">"Bạn là quân Trắng."</string>
+    <string name="textUIIsB">"Bạn là quân Đen."</string>
+    <string name="change_language">Change Language</string>
+    <string-array name="language_names">
+        <item>🇻🇳 Tiếng Việt</item>
+        <item>🇬🇧 English</item>
+    </string-array>
+
+
 </resources>

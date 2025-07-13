@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,12 +88,14 @@ public class StartGameActivity extends AppCompatActivity {
                 this::setupBoardAndUI // truyền callback khởi động lại
         );
 
+
         menuManager.prepare(menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         return menuManager != null && menuManager.handle(item) || super.onOptionsItemSelected(item);
     }
 
@@ -127,11 +130,11 @@ public class StartGameActivity extends AppCompatActivity {
     }
     private void setupGameMode() {
         if (isPlayingWithBot) {
-            // ⚔️ Chế độ chơi với Bot
-            isWhiteSide = true; // người chơi là trắng
+            //  Chế độ chơi với Bot
+            isWhiteSide = true;
             isWhiteTurn = true;
-            turnTextView.setText("Lượt bạn đi");
-            Toast.makeText(this, "Bạn chơi trắng. Bot sẽ đi sau bạn.", Toast.LENGTH_SHORT).show();
+            turnTextView.setText(getResources().getString(R.string.yourTurn));
+            Toast.makeText(this, getResources().getString(R.string.textStartWithBot), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -143,11 +146,11 @@ public class StartGameActivity extends AppCompatActivity {
             return;
         }
 
-        // 👥 Chế độ 2 người 1 máy
+        // 👥 Chế độ 2 người
         isWhiteSide = true; // người đầu tiên là trắng
         isWhiteTurn = true;
-        turnTextView.setText("Lượt Trắng đi");
-        Toast.makeText(this, "Chế độ 2 người 1 máy đang hoạt động.", Toast.LENGTH_SHORT).show();
+        turnTextView.setText(getResources().getString(R.string.textTurnWhite));
+        Toast.makeText(this, getResources().getString(R.string.textStartGame2PlayerActive), Toast.LENGTH_SHORT).show();
     }
 
     private void startOnlineSync(String currentUid) {
@@ -179,24 +182,20 @@ public class StartGameActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(StartGameActivity.this, "Lỗi Firebase: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(StartGameActivity.this, "Lỗi Firebase: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
     private void updateTurnUI() {
         if ((isWhiteSide && isWhiteTurn) || (!isWhiteSide && !isWhiteTurn)) {
-            turnTextView.setText("Lượt bạn đi");
+            turnTextView.setText(getResources().getString(R.string.textUITurn));
         } else {
-            turnTextView.setText("Chờ đối thủ đi");
+            turnTextView.setText(getResources().getString(R.string.textUIOpponentTurn));
         }
 
-        String roleText = isWhiteSide ? "Bạn là quân Trắng." : "Bạn là quân Đen.";
+        String roleText = isWhiteSide ? getResources().getString(R.string.textUIIsW) : getResources().getString(R.string.textUIIsB);
         Toast.makeText(this, roleText, Toast.LENGTH_SHORT).show();
     }
-
-
-
-
 
 
 
@@ -233,7 +232,7 @@ public class StartGameActivity extends AppCompatActivity {
                         (row == lastToRow && col == lastToCol)) {
                     border = new GradientDrawable();
                     border.setColor(Color.TRANSPARENT);
-                    border.setStroke(6, ContextCompat.getColor(this, R.color.colorPrimaryDark)); // ✅ đúng cách
+                    border.setStroke(6, ContextCompat.getColor(this, R.color.colorPrimaryDark)); //  đúng cách
                     border.setCornerRadius(6f);
                 }
 
@@ -307,7 +306,7 @@ public class StartGameActivity extends AppCompatActivity {
 
         selectedRow = row;
         selectedCol = col;
-        Toast.makeText(this, "Đã chọn: " + piece.getClass().getSimpleName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.choose) + piece.getClass().getSimpleName(), Toast.LENGTH_SHORT).show();
         highlightValidMoves(row, col);
     }
 
@@ -315,9 +314,21 @@ public class StartGameActivity extends AppCompatActivity {
         ChessPiece piece = board[row][col];
 
         if (selectedRow == -1 && piece != null) {
+            if (isPlayingWithBot) {
+                // Nếu không phải quân của người chơi → không cho chọn
+                if ((isWhiteTurn && piece.getColor() != ChessPiece.Color.WHITE) ||
+                        (!isWhiteTurn && piece.getColor() != ChessPiece.Color.BLACK)) {
+                    return;
+                }
+
+                // Nếu đang là lượt của bot → không cho người click
+                if (!isWhiteTurn) return;
+            }
+
             handlePieceSelection(row, col, piece);
             return;
         }
+
 
         if (selectedRow != -1) {
             ChessPiece selectedPiece = board[selectedRow][selectedCol];
@@ -381,7 +392,7 @@ public class StartGameActivity extends AppCompatActivity {
     /*Ktra nước đi hợp lệ khi bị chiếu*/
     private void handleMove(int row, int col) {
         if (isOnlineMode && !((isWhiteSide && isWhiteTurn) || (!isWhiteSide && !isWhiteTurn))) {
-            Toast.makeText(this, "⛔ Chưa đến lượt bạn!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.waitTurn), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -400,7 +411,7 @@ public class StartGameActivity extends AppCompatActivity {
                 highlightValidMoves(row, col);
                 renderPiecesToBoard();
             } else {
-                Toast.makeText(this, "Không phải lượt của bạn!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.waitTurn), Toast.LENGTH_SHORT).show();
             }
             return;
         }
@@ -503,22 +514,36 @@ public class StartGameActivity extends AppCompatActivity {
 
         // 11. Nếu chơi với Bot
         if (isPlayingWithBot && !isWhiteTurn) {
-            String fen = generateFEN();
-            new Thread(() -> {
-                String bestMove = StockfishApiHelper.getBestMove(fen);
-                runOnUiThread(() -> {
-                    if (bestMove != null) {
-                        botMove(bestMove);
-                    } else {
-                        Toast.makeText(this, "Bot không phản hồi!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }).start();
+            requestBotMove(0);
         }
+
 
         // 12. Kiểm tra chiếu / chiếu hết
         checkForCheckOrCheckmate();
     }
+
+    private void requestBotMove(int retryCount) {
+        if (!isPlayingWithBot || isWhiteTurn) return;
+
+        String fen = generateFEN();
+        new Thread(() -> {
+            String bestMove = StockfishApiHelper.getBestMove(fen);
+
+            runOnUiThread(() -> {
+                if (bestMove != null) {
+                    botMove(bestMove);
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.waitBotResponse), Toast.LENGTH_SHORT).show();
+                    if (retryCount < 3) {
+                        new Handler().postDelayed(() -> requestBotMove(retryCount + 1), 2000); // thử lại sau 2s
+                    } else {
+                        Toast.makeText(this,  getResources().getString(R.string.longerBotResponse), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }).start();
+    }
+
 
     private View getCellAt(int row, int col) {
         String cellId = "cell_" + row + "_" + col;

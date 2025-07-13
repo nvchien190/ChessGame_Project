@@ -1,11 +1,20 @@
 package vn.edu.fpt.chessgame;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Locale;
+
+import vn.edu.fpt.chessgame.logic.LanguageHelper;
+import vn.edu.fpt.chessgame.logic.LanguageSelector;
 import vn.edu.fpt.chessgame.logic.OnlineChessManager;
 import vn.edu.fpt.chessgame.logic.OnlineOptionActivity;
 import vn.edu.fpt.chessgame.logic.StartGameActivity;
@@ -45,46 +58,22 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-//        Button buttonOnline = findViewById(R.id.buttonStartOnline);
-//        buttonOnline.setOnClickListener(v -> {
-//            // 🔧 Khởi tạo Firebase với URL vùng đúng (asia-southeast1)
-//            FirebaseDatabase database = FirebaseDatabase.getInstance(
-//                    "https://chessgame-e626e-default-rtdb.asia-southeast1.firebasedatabase.app/"
-//            );
-//
-//            // 🔑 Tạo ID cho phòng chơi
-//            String matchId = database.getReference("matches").push().getKey();
-//
-//            // ✅ Kiểm tra ID hợp lệ
-//            if (matchId != null) {
-//                // 👤 Tạo đối tượng Match
-//                Match match = new Match("uid_1", "", "waiting");
-//
-//                // 📝 Ghi dữ liệu lên Firebase
-//                database.getReference("matches").child(matchId).setValue(match)
-//                        .addOnCompleteListener(task -> {
-//                            if (task.isSuccessful()) {
-//                                String msg = "✅ Đã tạo phòng online: " + matchId;
-//                                Log.d("FirebaseMatch", msg);
-//                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                Log.e("FirebaseMatch", "❌ Ghi dữ liệu thất bại", task.getException());
-//                                Toast.makeText(MainActivity.this, "Không ghi được dữ liệu!", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//            } else {
-//                Log.e("FirebaseMatch", "❌ Không tạo được matchId (null)");
-//                Toast.makeText(MainActivity.this, "Không thể tạo phòng chơi!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         Button buttonOnline = findViewById(R.id.buttonStartOnline);
         buttonOnline.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, OnlineOptionActivity.class);
             startActivity(intent);
         });
+        Spinner spinner = findViewById(R.id.spinnerLanguage);
+        LanguageSelector.attachToSpinner(this, spinner);
 
     }
+
+
+
+
+
+
 
 
 }
